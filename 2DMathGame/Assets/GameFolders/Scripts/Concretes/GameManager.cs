@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using DG.Tweening;
 
@@ -12,18 +13,40 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Image upperQuery, lowerQuery;
     [SerializeField] private Image leftGrate, rightGrate;
     [SerializeField] GameObject wheel;
+    [SerializeField] private Image trueIcon, falseIcon;
+    [SerializeField] private GameObject icons;
+    [SerializeField] private Text trueNumText, falseNumText, totalScoreText;
+
+
+    public int TrueNum => trueNum;
+    public int FalseNum => falseNum;
+    public int TotalScore => totalScore;
 
     private bool circleOnTop;
+    private bool isTurnedFinished;
+
+
     private int whichQuery;
     private int wrongAnswerCount;
+    int trueNum, falseNum, totalScore;
+
+
 
     private Image imageOnButton;
 
     private void Start()
     {
         circleOnTop = true;
-        GetImages();
 
+        isTurnedFinished = true;
+        trueNum = 0;
+        falseNum = 0;
+        totalScore = 0;
+        trueNumText.text = trueNum.ToString();
+        falseNumText.text = falseNum.ToString();
+        totalScoreText.text = totalScore.ToString();
+
+        GetImages();
     }
     private void Update()
     {
@@ -55,18 +78,39 @@ public class GameManager : MonoBehaviour
         CheckTheResult();
     }
 
+    public void BackToTheMenu()
+    {
+        SceneManager.LoadScene("Menu");
+    }
     private void CheckTheResult()
     {
+        if(!isTurnedFinished) return;
         if (imageOnButton.sprite == kokDisiResimler[whichQuery])
         {
-            wheel.transform.DORotate(wheel.transform.rotation.eulerAngles + new Vector3(0,0,180),1f);
-            GetImages();
+            isTurnedFinished = false;
+            wheel.transform.DORotate(wheel.transform.rotation.eulerAngles + new Vector3(0, 0, 180), 1f);
+            isTurnedFinished = true;
+
+
             wrongAnswerCount = 0;
+            trueNum++;
+            trueNumText.text = trueNum.ToString();
+            totalScore += 20;
+            totalScoreText.text = totalScore.ToString();
+
+            GetImages();
+            SetIcons(true);
         }
         else
         {
-            if (wrongAnswerCount > 2) return;
+            if (wrongAnswerCount == 2) return;
+            falseNum++;
+            falseNumText.text = falseNum.ToString();
+            totalScore -= 5;
+            totalScoreText.text = totalScore.ToString();
+
             wrongAnswerCount++;
+            SetIcons(false);
         }
     }
 
@@ -84,19 +128,32 @@ public class GameManager : MonoBehaviour
                 break;
             case 2:
                 leftGrate.transform.DOLocalMove(new Vector3(-76, 57, 0), .2f);
-                rightGrate.transform.DOLocalMove(new Vector3(83, 57, 0), .2f).OnComplete(WaitForGratesClosing);
+                rightGrate.transform.DOLocalMove(new Vector3(83, 57, 0), .2f);
+                Invoke("WaitForGratesClosing", 1f);
                 break;
-            default:              
+            default:
                 break;
         }
     }
 
     void WaitForGratesClosing()
     {
-        wheel.transform.DORotate(wheel.transform.rotation.eulerAngles + new Vector3(0, 0, 180), 1f);
-        GetImages();
-        wrongAnswerCount = 0;
-        
+        if (wrongAnswerCount == 2)
+        {
+            wrongAnswerCount = 0;
+            isTurnedFinished = false;
+            wheel.transform.DORotate(wheel.transform.rotation.eulerAngles + new Vector3(0, 0, 180), 0.5f);
+            isTurnedFinished = true;
+            GetImages();
+        }
+    }
+
+    void SetIcons(bool isTrue)
+    {
+        icons.GetComponent<CanvasGroup>().alpha = 1;
+        trueIcon.gameObject.SetActive(isTrue);
+        falseIcon.gameObject.SetActive(!isTrue);
+        icons.GetComponent<CanvasGroup>().DOFade(0, 1f);
     }
     void GetImages()
     {
@@ -110,18 +167,18 @@ public class GameManager : MonoBehaviour
             {
                 purpleNonRoot.sprite = kokDisiResimler[whichQuery];
                 blueNonRoot.sprite = kokDisiResimler[whichQuery + 1];
-                blackNonRoot.sprite = kokDisiResimler[whichQuery - 1];
+                blackNonRoot.sprite = kokDisiResimler[whichQuery + 2];
             }
             else if (randomValue >= 66)
             {
                 purpleNonRoot.sprite = kokDisiResimler[whichQuery + 1];
                 blueNonRoot.sprite = kokDisiResimler[whichQuery];
-                blackNonRoot.sprite = kokDisiResimler[whichQuery - 1];
+                blackNonRoot.sprite = kokDisiResimler[whichQuery + 2];
             }
             else
             {
                 purpleNonRoot.sprite = kokDisiResimler[whichQuery + 1];
-                blueNonRoot.sprite = kokDisiResimler[whichQuery - 1];
+                blueNonRoot.sprite = kokDisiResimler[whichQuery + 2];
                 blackNonRoot.sprite = kokDisiResimler[whichQuery];
             }
         }
@@ -132,17 +189,17 @@ public class GameManager : MonoBehaviour
             {
                 orangeNonRoot.sprite = kokDisiResimler[whichQuery];
                 redNonRoot.sprite = kokDisiResimler[whichQuery + 1];
-                greenNonRoot.sprite = kokDisiResimler[whichQuery - 1];
+                greenNonRoot.sprite = kokDisiResimler[whichQuery + 2];
             }
             else if (randomValue >= 66)
             {
                 orangeNonRoot.sprite = kokDisiResimler[whichQuery + 1];
                 redNonRoot.sprite = kokDisiResimler[whichQuery];
-                greenNonRoot.sprite = kokDisiResimler[whichQuery - 1];
+                greenNonRoot.sprite = kokDisiResimler[whichQuery + 2];
             }
             else
             {
-                orangeNonRoot.sprite = kokDisiResimler[whichQuery - 1];
+                orangeNonRoot.sprite = kokDisiResimler[whichQuery + 2];
                 redNonRoot.sprite = kokDisiResimler[whichQuery + 1];
                 greenNonRoot.sprite = kokDisiResimler[whichQuery];
             }
