@@ -5,7 +5,12 @@
       "ProjectGuid": "df05fa45-55dd-13af-aaa6-6f1426987654",
       "DisplayName": "Assembly-CSharp",
       "ColorIndex": 0
+    },
+    "72750828-0fe6-b7ba-5fe3-d11da12cf284": {
+      "ProjectGuid": "72750828-0fe6-b7ba-5fe3-d11da12cf284",
+      "DisplayName": "Unity.VisualStudio.Editor",
+      "ColorIndex": 1
     }
   },
-  "NextColorIndex": 1
+  "NextColorIndex": 2
 }
