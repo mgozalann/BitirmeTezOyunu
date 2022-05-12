@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Image trueIcon, falseIcon;
     [SerializeField] private GameObject icons;
     [SerializeField] private Text trueNumText, falseNumText, totalScoreText;
-
+    [SerializeField] AudioClip grateSfx,wheelSfx;
 
     public int TrueNum => trueNum;
     public int FalseNum => falseNum;
@@ -89,6 +89,7 @@ public class GameManager : MonoBehaviour
         {
             isTurnedFinished = false;
             wheel.transform.DORotate(wheel.transform.rotation.eulerAngles + new Vector3(0, 0, 180), 1f);
+            AudioSource.PlayClipAtPoint(wheelSfx, transform.position);
             isTurnedFinished = true;
 
 
@@ -110,6 +111,7 @@ public class GameManager : MonoBehaviour
             totalScoreText.text = totalScore.ToString();
 
             wrongAnswerCount++;
+            AudioSource.PlayClipAtPoint(grateSfx, transform.position);
             SetIcons(false);
         }
     }
@@ -143,6 +145,7 @@ public class GameManager : MonoBehaviour
             wrongAnswerCount = 0;
             isTurnedFinished = false;
             wheel.transform.DORotate(wheel.transform.rotation.eulerAngles + new Vector3(0, 0, 180), 0.5f);
+            AudioSource.PlayClipAtPoint(wheelSfx, transform.position);
             isTurnedFinished = true;
             GetImages();
         }

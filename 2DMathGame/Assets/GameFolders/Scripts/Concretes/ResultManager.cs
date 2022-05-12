@@ -13,7 +13,6 @@ public class ResultManager : MonoBehaviour
     private void OnEnable()
     {
         GetComponent<CanvasGroup>().DOFade(1, 1f);
-        Random.Range(1, 10)
     }
 
     public void GetResults(int trueNum,int falseNum,int totalScore)

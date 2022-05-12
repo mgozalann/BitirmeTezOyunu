@@ -56,11 +56,11 @@
     <Analyzer Include="C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\Extensions\Microsoft\Visual Studio Tools for Unity\Analyzers\Microsoft.Unity.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\GameFolders\Scripts\Concretes\ResultManager.cs" />
     <Compile Include="Assets\GameFolders\Scripts\Concretes\GameManager.cs" />
     <Compile Include="Assets\GameFolders\Scripts\Concretes\MenuManager.cs" />
-    <Compile Include="Assets\GameFolders\Scripts\Concretes\SecondMenuManager.cs" />
     <Compile Include="Assets\GameFolders\Scripts\Concretes\TimeManager.cs" />
-    <Compile Include="Assets\GameFolders\Scripts\Concretes\ResultManager.cs" />
+    <Compile Include="Assets\GameFolders\Scripts\Concretes\SecondMenuManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
